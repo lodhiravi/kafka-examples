@@ -1,6 +1,7 @@
 package myapps.clients.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import myapps.util.KafkaUtil;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
@@ -10,15 +11,16 @@ import java.util.Map;
 import java.util.Properties;
 
 public class OrderNotificationConsumer {
+    private final static String BOOTSTRAP_SERVERS = KafkaUtil.getBootstrapServer();
     private final static String TOPIC_NAME = "orders";
-    private final static String BOOTSTRAP_SERVERS = "localhost:9092";
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
+
         // Set up Kafka consumer properties
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order-consumers");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order-notification-consumers");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");

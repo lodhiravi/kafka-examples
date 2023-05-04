@@ -2,6 +2,7 @@ package myapps.clients.order;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import myapps.util.KafkaUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -15,8 +16,8 @@ import java.util.Map;
 import java.util.Properties;
 
 public class OrderProducer {
+    private final static String BOOTSTRAP_SERVERS = KafkaUtil.getBootstrapServer();
     private final static String TOPIC_NAME = "orders";
-    private final static String BOOTSTRAP_SERVERS = "localhost:9092";
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
@@ -31,7 +32,7 @@ public class OrderProducer {
 
         // Reads orders
         try {
-            File jsonFile = new File("/home/ravi/ofbiz_dev/kafka/test-projects/streams.examples/data/Orders.json");
+            File jsonFile = new File("data/Orders.json");
             List<Map<String, Object>> orders = OBJECT_MAPPER.readValue(jsonFile, new TypeReference<List<Map<String, Object>>>(){});
 
             for(Map<String, Object> order : orders) {

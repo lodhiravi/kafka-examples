@@ -1,5 +1,6 @@
 package myapps.topic;
 
+import myapps.util.KafkaUtil;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DeleteTopicsResult;
@@ -13,12 +14,13 @@ public class KafkaTopicManager {
 
     private static final int DEFAULT_NUM_PARTITIONS = 1;
     private static final short DEFAULT_REPLICATION_FACTOR = 1;
+    private final static String BOOTSTRAP_SERVERS = KafkaUtil.getBootstrapServer();
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         // Set Kafka admin properties
         Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 
         // Create a Kafka admin client
         AdminClient adminClient = AdminClient.create(props);
